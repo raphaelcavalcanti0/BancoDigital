@@ -2,13 +2,15 @@ package com.rcfin.models;
 
 import com.rcfin.controle.Controles;
 
+import java.math.BigDecimal;
+
 public class MovimentosConta {
 
     private String movimento;
-    private double valor;
+    private BigDecimal valor;
     private String documento;
 
-    public MovimentosConta(String movimento, double valor) {
+    public MovimentosConta(String movimento, BigDecimal valor) {
         this.movimento = movimento;
         this.valor = valor;
         this.documento = String.valueOf(Controles.IDENTIFICADOR_MOVIMENTO);
@@ -19,7 +21,7 @@ public class MovimentosConta {
         return movimento;
     }
 
-    public double getValor() {
+    public BigDecimal getValor() {
         return valor;
     }
 

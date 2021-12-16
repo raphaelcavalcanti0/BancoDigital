@@ -39,13 +39,14 @@ public class Agencia {
         return new Conta(this, cliente);
     }
 
-    public Emprestimo novoEmprestimo(Agencia agencia, Cliente cliente,
+    public Emprestimo novoEmprestimo(Agencia agencia, Cliente cliente, Conta conta,
                                      Calendar dataContratacao, Emprestimo.tipoAmortizacao tipoAmortiza,
                                      BigDecimal valorSolicitado, BigDecimal taxaJuros,
                                      BigDecimal taxaMora, BigDecimal taxaAtraso,
                                      int numeroParcelas, int diaVencimento) throws ParseException {
         Emprestimo emprestimo = new Emprestimo(this,
                 cliente,
+                conta,
                 dataContratacao,
                 tipoAmortiza,
                 valorSolicitado,

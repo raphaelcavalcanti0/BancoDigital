@@ -18,6 +18,7 @@ public class Emprestimo {
     private final String contrato;
     private Agencia agencia;
     private Cliente cliente;
+    private Conta conta;
     private Calendar dataContratacao;
     private tipoAmortizacao tipoAmortiza;
     private BigDecimal valorSolicitado;
@@ -31,7 +32,7 @@ public class Emprestimo {
     private List<Parcela> parcelaList = new ArrayList<>();
 
 
-    public Emprestimo(Agencia agencia, Cliente cliente,
+    public Emprestimo(Agencia agencia, Cliente cliente, Conta conta,
                       Calendar dataContratacao, tipoAmortizacao tipoAmortiza,
                       BigDecimal valorSolicitado, BigDecimal taxaJuros,
                       BigDecimal taxaMora, BigDecimal taxaAtraso,
@@ -39,6 +40,7 @@ public class Emprestimo {
         this.contrato = String.valueOf(Controles.IDENTIFICADOR_CONTRATO);
         this.agencia = agencia;
         this.cliente = cliente;
+        this.conta = conta;
         this.dataContratacao = dataContratacao;
         this.tipoAmortiza = tipoAmortiza;
         this.valorSolicitado = valorSolicitado;
@@ -73,6 +75,8 @@ public class Emprestimo {
                 parcelaList.add(parcela);
             }
         }
+
+        conta.depositarEmprestimo(valorSolicitado);
 
     }
 

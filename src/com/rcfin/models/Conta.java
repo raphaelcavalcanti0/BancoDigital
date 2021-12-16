@@ -3,6 +3,7 @@ package com.rcfin.models;
 
 import com.rcfin.controle.Controles;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,7 +12,7 @@ public class Conta implements IConta {
     protected Agencia agencia;
     protected String numeroConta;
     protected Cliente cliente;
-    protected double saldo;
+    protected BigDecimal saldo;
     protected String moeda;
     protected List<MovimentosConta> movimentosContaList = new ArrayList<>();
 
@@ -19,15 +20,15 @@ public class Conta implements IConta {
         this.agencia = agencia;
         this.numeroConta = String.valueOf(Controles.IDENTIFICADOR_CONTA);
         this.cliente = cliente;
-        this.saldo = 0d;
+        this.saldo = BigDecimal.valueOf(0d);
         this.moeda = "R$";
         Controles.IDENTIFICADOR_CONTA++;
     }
 
     @Override
-    public void sacar(double valor) {
-        if (this.saldo >= valor) {
-            this.saldo -= valor;
+    public void sacar(BigDecimal valor) {
+        if (this.saldo.compareTo(valor) < 0) {
+            this.saldo = saldo.subtract(valor);
             MovimentosConta mov = new MovimentosConta("Saque", valor);
             movimentosContaList.add(mov);
         } else {
@@ -36,9 +37,22 @@ public class Conta implements IConta {
     }
 
     @Override
-    public void depositar(double valor) {
-        this.saldo += valor;
+    public void depositar(BigDecimal valor) {
+        this.saldo = saldo.add(valor);
         MovimentosConta mov = new MovimentosConta("Depósito", valor);
+        movimentosContaList.add(mov);
+    }
+
+    @Override
+    public void depositar(BigDecimal valor, MovimentosConta mov) {
+        this.saldo = saldo.add(valor);
+        movimentosContaList.add(mov);
+    }
+
+    @Override
+    public void depositarEmprestimo(BigDecimal valor) {
+        this.saldo = saldo.add(valor);
+        MovimentosConta mov = new MovimentosConta("Empréstimo", valor);
         movimentosContaList.add(mov);
     }
 
@@ -48,11 +62,11 @@ public class Conta implements IConta {
     }
 
     @Override
-    public void transferir(double valor, Conta contaDestino) {
-        if (this.saldo >= valor) {
+    public void transferir(BigDecimal valor, Conta contaDestino) {
+        if (this.saldo.compareTo(valor) >= 0) {
             this.sacar(valor);
-            contaDestino.depositar(valor);
             MovimentosConta mov = new MovimentosConta("Transferência", valor);
+            contaDestino.depositar(valor, mov);
             movimentosContaList.add(mov);
         } else {
             System.out.println("[!] Saldo insuficiente para realizar a transferência. Consulte seu saldo!");

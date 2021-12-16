@@ -31,23 +31,23 @@ public class Main {
         Conta conta2 = agencia1.abrirConta(cliente2);
 
         conta1.consultarSaldo();
-        conta1.depositar(100d);
-        conta1.sacar(50d);
+        conta1.depositar(BigDecimal.valueOf(100d));
+        conta1.sacar(BigDecimal.valueOf(10d));
         conta1.consultarSaldo();
         conta1.consultarExtrato();
         conta2.consultarExtrato();
-        conta1.transferir(50, conta2);
+        conta1.transferir(BigDecimal.valueOf(50d), conta2);
         conta1.consultarExtrato();
         conta2.consultarExtrato();
 
-        Emprestimo emprestimo1 = agencia1.novoEmprestimo(agencia1, cliente1, Calendar.getInstance(),
+        Emprestimo emprestimo1 = agencia1.novoEmprestimo(agencia1, cliente1, conta1, Calendar.getInstance(),
                 Emprestimo.tipoAmortizacao.PRICE, BigDecimal.valueOf(1000.0d),
                 Controles.TAXA_EMPRESTIMO_MENSAL,
                 Controles.TAXA_MORA,
                 Controles.TAXA_ATRASO_MENSAL,
                 6, 15);
 
-        Emprestimo emprestimo2 = agencia1.novoEmprestimo(agencia1, cliente2, Calendar.getInstance(),
+        Emprestimo emprestimo2 = agencia1.novoEmprestimo(agencia1, cliente2, conta2, Calendar.getInstance(),
                 Emprestimo.tipoAmortizacao.PRICE, BigDecimal.valueOf(5000.0d),
                 Controles.TAXA_EMPRESTIMO_MENSAL,
                 Controles.TAXA_MORA,
@@ -57,6 +57,9 @@ public class Main {
         emprestimo1.consultarParcelas();
         emprestimo2.consultarParcelas();
         agencia1.listarEmprestimos();
+
+        conta1.consultarExtrato();
+        conta2.consultarExtrato();
 
     }
 }
